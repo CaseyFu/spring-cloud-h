@@ -1,0 +1,54 @@
+server:
+  port: 10010
+
+spring:
+  application:
+    name: cloud-oauth2-auth
+  datasource:
+    url: jdbc:p6spy:mysql://192.168.153.128:3306/cloud?useUnicode=true&characterEncoding=UTF-8&useSSL=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: root
+    password: 2168230078
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: never
+    continue-on-error: true
+    hikari:
+      pool-name: mybatis
+      connection-test-query: SELECT 1
+      auto-commit: true
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 60000
+      connection-timeout: 30000
+  redis:
+    host: 120.25.156.132
+    port: 30332
+    password: 2168230078
+    database: 0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.153.128:8848
+
+mybatis-plus:
+  mapper-locations: classpath*:org/casey/cloudoauth2auth/mapper/xml/*.xml
+  type-aliases-package: org.casey.cloudoauth2auth.entity
+  global-config:
+    db-config:
+      #      id-type: auto
+      table-underline: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
+
+loggin:
+  level:
+    org.springframework: debug

@@ -1,0 +1,88 @@
+server:
+  port: 10300
+#  servlet:
+#    context-path: /api
+
+spring:
+  application:
+    name: cloud-order-service
+  datasource:
+    url: jdbc:p6spy:mysql://192.168.153.128:3306/seata_order?useUnicode=true&characterEncoding=UTF-8&useSSL=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: root
+    password: 2168230078
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: never
+    continue-on-error: true
+    hikari:
+      pool-name: mybatis
+      connection-test-query: SELECT 1
+      auto-commit: true
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 60000
+      connection-timeout: 30000
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.153.128:8848
+        username: nacos
+        password: nacos
+    #      config:
+    #        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+    #        file-extension: yml
+    sentinel:
+      datasource:
+        # nacos持久化限流配置
+        flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+            data-id: ${spring.application.name}-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+        # nacos持久化降级配置
+        degrade:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+            data-id: ${spring.application.name}-degrade
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
+      transport:
+        # sentinel服务端地址
+        dashboard: 192.168.153.128:8080
+        port: 8719
+      # 取消延迟加载
+      eager: true
+#    alibaba:
+#      seata:
+#        # 自定义事务组名称需要与seata-server中的对应
+#        tx-service-group: default
+
+mybatis-plus:
+  mapper-locations: classpath*:org/casey/cloudorderservice/mapper/xml/*.xml
+  type-aliases-package: org.casey.cloudorderservice.entity
+  global-config:
+    db-config:
+      id-type: auto
+      table-underline: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+

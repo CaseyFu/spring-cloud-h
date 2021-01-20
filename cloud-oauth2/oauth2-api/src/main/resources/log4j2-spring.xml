@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--输出日志的格式
+%d{yyyy-MM-dd HH:mm:ss} : 日志生产时间
+%p : 日志输出格式
+%c : logger的名称
+%m : 日志内容
+%n : 换行符
+%C : Java类名
+%L : 日志输出所在行数
+%M : 日志输出所在方法名
+%hostName : 本地机器名
+%hostAddress : 本地ip地址 -->
+<!-- status: 指定log4j本身的打印日志的级别-->
+<!-- 日志级别: ALL<TRACE<DEBUG<INFO<WARN<ERROR<FATAL<OFF -->
+<!--monitorInterval: 用于指定log4j自动重新配置的监测间隔时间, 单位是s, 最小是5s-->
+<configuration status="INFO" monitorInterval="30">
+    <properties>
+        <property name="LOG_HOME">logs/cloud-oauth2-api</property>
+        <property name="INFO_HOME" value="info" />
+        <property name="WARN_HOME" value="warn" />
+        <property name="ERROR_HOME" value="error" />
+        <property name="splitSize" value="1MB" />
+        <property name="filePattern">%d{yyyy-MM-dd HH:mm:ss} %highlight{%level}{ERROR=red, WARN=yellow, INFO=blue, DEBUG=green} [%t] %cyan{%C:%M():%L} - %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</property>
+    </properties>
+
+    <appenders>
+        <console name="Console" target="SYSTEM_OUT">
+            <!--控制台只输出INFO及以上级别的信息, disableAnsi, windows下高亮-->
+            <thresholdFilter level="INFO" onMatch="ACCEPT" />
+            <patternLayout pattern="${filePattern}" disableAnsi="false"/>
+        </console>
+
+        <!--info-->
+        <!-- 大小超过size, 会自动存入按年-月-日建立的文件夹下面并进行压缩 -->
+        <rollingFile name="RollingFileInfo"
+                     append="true"
+                     fileName="${LOG_HOME}/${INFO_HOME}/info.log"
+                     filePattern="${LOG_HOME}/${INFO_HOME}/%d{yyyy-MM-dd}-info-%i.log">
+            <thresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <patternLayout pattern="${filePattern}"/>
+            <policies>
+                <!-- log4j2的按天分日志文件 : info-%d{yyyy-MM-dd}-%i.log-->
+                <timeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <sizeBasedTriggeringPolicy size="${splitSize}"/>
+            </policies>
+            <!-- 同一文件夹下的文件数默认7 -->
+            <defaultRolloverStrategy max="20"/>
+        </rollingFile>
+
+        <!--warn-->
+        <rollingFile name="RollingFileWarn"
+                     append="true"
+                     fileName="${LOG_HOME}/${WARN_HOME}/warn.log"
+                     filePattern="${LOG_HOME}/${WARN_HOME}/%d{yyyy-MM-dd}-warn-%i.log">
+            <thresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>
+            <patternLayout pattern="${filePattern}"/>
+            <policies>
+                <timeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <sizeBasedTriggeringPolicy size="${splitSize}"/>
+            </policies>
+            <!-- 同一文件夹下的文件数默认7 -->
+            <defaultRolloverStrategy max="20"/>
+        </rollingFile>
+
+        <!--error-->
+        <rollingFile name="RollingFileError"
+                     append="true"
+                     fileName="${LOG_HOME}/${ERROR_HOME}/error.log"
+                     filePattern="${LOG_HOME}/${ERROR_HOME}/%d{yyyy-MM-dd}-error-%i.log">
+            <thresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            <patternLayout pattern="${filePattern}"/>
+            <policies>
+                <timeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <sizeBasedTriggeringPolicy size="${splitSize}"/>
+            </policies>
+        </rollingFile>
+    </appenders>
+
+    <loggers>
+        <!--过滤掉spring和mybatis的一些无用的INFO和DEBUG信息, 只显示WARN及以上-->
+        <!-- 第三方日志系统 -->
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.mybatis" level="WARN"/>
+        <logger name="org.springframework.core" level="WARN"/>
+        <logger name="org.springframework.beans" level="WARN"/>
+        <logger name="org.springframework.context" level="WARN"/>
+        <logger name="org.springframework.web" level="WARN"/>
+        <logger name="org.jboss.netty" level="WARN"/>
+        <logger name="org.apache.http" level="WARN"/>
+        <!--主要使用INFO, WARN, ERROR-->
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+            <!--一般控制台就行, 写文件太伤硬盘-->
+            <!--<appender-ref ref="RollingFileInfo"/>-->
+            <!--<appender-ref ref="RollingFileWarn"/>-->
+            <!--<appender-ref ref="RollingFileError"/>-->
+        </root>
+    </loggers>
+</configuration>

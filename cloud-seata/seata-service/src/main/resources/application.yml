@@ -1,0 +1,18 @@
+server:
+  port: 10400
+
+spring:
+  application:
+    name: cloud-business-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.153.128:8848
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+

@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.casey</groupId>
+    <artifactId>spring-cloud-h</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven-compiler.version>3.8.1</maven-compiler.version>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+        <spring-cloud.version>Hoxton.SR8</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.3.RELEASE</spring-cloud-alibaba.version>
+        <lombok.version>1.18.12</lombok.version>
+        <knife4j.version>2.0.7</knife4j.version>
+        <swagger.version>3.0.0</swagger.version>
+        <p6spy.version>3.9.1</p6spy.version>
+        <mysql-connector.version>8.0.20</mysql-connector.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <freemarker.version>2.3.29</freemarker.version>
+        <hibernate-validator.version>6.1.6.Final</hibernate-validator.version>
+        <jackson.version>2.10.4</jackson.version>
+        <hutool.version>5.3.3</hutool.version>
+    </properties>
+
+    <modules>
+        <module>cloud-common</module>
+        <module>cloud-gateway</module>
+        <module>cloud-account</module>
+        <module>cloud-order</module>
+        <module>cloud-product</module>
+        <module>cloud-oauth2</module>
+        <module>cloud-auth</module>
+        <module>cloud-seata</module>
+    </modules>
+
+    <dependencies>
+
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- ==================== Boot, Cloud, Alibaba依赖 ==================== -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- ==================== Swagger ==================== -->
+            <!--<dependency>-->
+            <!--    <groupId>io.springfox</groupId>-->
+            <!--    <artifactId>springfox-boot-starter</artifactId>-->
+            <!--    <version>${swagger.version}</version>-->
+            <!--</dependency>-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+
+            <!-- ==================== 数据库相关 ==================== -->
+            <!--SQL分析 数据库驱动 dev环境中使用-->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+
+            <!--MySQL数据库驱动-->
+            <!--runtime-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!--freemarker模板-->
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+
+
+            <!-- ==================== jwt ==================== -->
+            <!--<dependency>-->
+            <!--    <groupId>io.jsonwebtoken</groupId>-->
+            <!--    <artifactId>jjwt-api</artifactId>-->
+            <!--    <version>0.11.2</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>io.jsonwebtoken</groupId>-->
+            <!--    <artifactId>jjwt-impl</artifactId>-->
+            <!--    <version>0.11.2</version>-->
+            <!--    <scope>runtime</scope>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+            <!--    <groupId>io.jsonwebtoken</groupId>-->
+            <!--    <artifactId>jjwt-jackson</artifactId> &lt;!&ndash; or jjwt-gson if Gson is preferred &ndash;&gt;-->
+            <!--    <version>0.11.2</version>-->
+            <!--    <scope>runtime</scope>-->
+            <!--</dependency>-->
+
+            <!--<dependency>-->
+            <!--    <groupId>io.jsonwebtoken</groupId>-->
+            <!--    <artifactId>jjwt-root</artifactId>-->
+            <!--    <version>0.11.1</version>-->
+            <!--</dependency>-->
+
+            <dependency>
+                <groupId>com.nimbusds</groupId>
+                <artifactId>nimbus-jose-jwt</artifactId>
+                <version>8.16</version>
+            </dependency>
+
+
+            <!-- ==================== 工具 ==================== -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.1.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-core</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!--<dependency>-->
+            <!--    <groupId>com.alibaba</groupId>-->
+            <!--    <artifactId>fastjson</artifactId>-->
+            <!--    <version>1.2.68</version>-->
+            <!--</dependency>-->
+
+            <!--oshi-->
+            <dependency>
+                <groupId>com.github.oshi</groupId>
+                <artifactId>oshi-core</artifactId>
+                <version>5.2.5</version>
+            </dependency>
+
+            <!--table-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>2.2.6</version>
+            </dependency>
+
+
+            <!-- Spring 默认自带Jackson 这里替换Spring默认版本的Jackson 根目录替换所有子目录跟着替换 子模块不需要依赖 -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <!--<build>-->
+    <!--    <plugins>-->
+    <!--        <plugin>-->
+    <!--            <groupId>org.apache.maven.plugins</groupId>-->
+    <!--            <artifactId>maven-compiler-plugin</artifactId>-->
+    <!--            <version>${maven-compiler.version}</version>-->
+    <!--            <configuration>-->
+    <!--                <source>8</source>-->
+    <!--                <target>8</target>-->
+    <!--            </configuration>-->
+    <!--        </plugin>-->
+    <!--    </plugins>-->
+    <!--</build>-->
+
+</project>

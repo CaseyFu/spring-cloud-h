@@ -1,0 +1,15 @@
+#spring:
+#  application:
+#    name: cloud-account-service
+#  cloud:
+#    nacos:
+#      config:
+#        server-addr: 192.168.153.128:8848
+#        file-extension: yml
+#        # 使用namespace或者profiles.active
+#        # 开发环境namespace
+#        namespace: 4dae9ef1-605b-4450-a4d1-6223944593c6
+        # 测试环境namespace
+#        namespace: c8d1825b-b18f-47e4-ac76-1ad34fd9b1c3
+        # 生产环境namespace
+#        namespace: 81926ebb-ad1d-4e79-8a4a-2dfd4ceff637

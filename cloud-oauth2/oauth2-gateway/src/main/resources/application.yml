@@ -1,0 +1,48 @@
+server:
+  port: 10000
+
+
+spring:
+  application:
+    name: cloud-oauth2-gateway
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # 配置RSA的公钥访问地址
+          jwk-set-uri: 'http://localhost:10010/rsa/publicKey'
+    # 自定义网关访问白名单
+    gateway-allowed-uri-list:
+      - "/actuator/**"
+      - "/auth/oauth/token"
+  redis:
+    host: 120.25.156.132
+    port: 30332
+    password: 2168230078
+    database: 0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.153.128:8848
+    gateway:
+      discovery:
+        locator:
+          # 开启从注册中心动态创建路由的功能，利用微服务名称进行路由
+          enabled: true
+          # 使用小写服务名，默认是大写
+          lower-case-service-id: true
+      routes:
+        - id: cloud-oauth2-api
+          # load balance 动态路由方式需要配合eureka, nacos注册中心使用
+          uri: lb://cloud-oauth2-api
+          predicates:
+            - Path=/api/**
+          filters:
+            - StripPrefix=1
+        - id: cloud-oauth2-auth
+          uri: lb://cloud-oauth2-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+
