@@ -20,8 +20,7 @@ public class StringUtil {
      * 下划线转驼峰
      */
     public static String underlineToHump(String str) {
-        str = str.toLowerCase();
-        Matcher matcher = UNDERLINE_PATTERN.matcher(str);
+        Matcher matcher = UNDERLINE_PATTERN.matcher(str.toLowerCase());
         StringBuffer stringBuffer = new StringBuffer();
         while (matcher.find()) {
             matcher.appendReplacement(stringBuffer, matcher.group(1).toUpperCase());

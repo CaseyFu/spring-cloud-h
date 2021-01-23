@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cloud-oauth2-api
+    name: oauth2-api
   cloud:
     nacos:
       discovery:

@@ -1,9 +1,11 @@
 package org.casey.oauth2.auth.filter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
 /**
  * @ClassName ClientAuthenticationFilter
@@ -12,11 +14,11 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @Date 2021/1/16 11:43
  */
 
+
 public class ClientAuthenticationFilter extends ClientCredentialsTokenEndpointFilter {
 
-    private AuthorizationServerSecurityConfigurer configurer;
+    private final AuthorizationServerSecurityConfigurer configurer;
     private AuthenticationEntryPoint authenticationEntryPoint;
-
 
     public ClientAuthenticationFilter(AuthorizationServerSecurityConfigurer configurer) {
         this.configurer = configurer;

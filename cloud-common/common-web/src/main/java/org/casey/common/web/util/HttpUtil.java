@@ -1,6 +1,5 @@
-package org.casey.oauth2.auth.util;
+package org.casey.common.web.util;
 
-import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,14 +22,12 @@ public class HttpUtil {
     /**
      * 封装response
      */
-    public static HttpServletResponse packResponse(HttpServletResponse response) {
+    public static void packResponse(HttpServletResponse response) {
         response.setStatus(HttpStatus.OK.value());
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
         response.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,"*");
-        response.setHeader(HttpHeaders.CACHE_CONTROL, CacheControl.noCache().getHeaderValue());
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        return response;
     }
 
     /**

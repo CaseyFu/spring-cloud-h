@@ -3,7 +3,7 @@ package org.casey.oauth2.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"org.casey.oauth2.api"})
 public class CloudOauth2ApiApplication {
 
 	public static void main(String[] args) {

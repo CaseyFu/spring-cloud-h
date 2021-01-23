@@ -80,6 +80,10 @@
 			<artifactId>hutool-core</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-web</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

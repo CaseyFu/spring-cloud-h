@@ -39,11 +39,11 @@ public class RequestTimeFilter extends AbstractGatewayFilterFactory<RequestTimeF
                     Mono.fromRunnable(() -> {
                         Long startTime = exchange.getAttribute("beginTime");
                         if (startTime != null) {
-                            StringBuilder sb = new StringBuilder(exchange.getRequest().getURI().getRawPath())
-                                    .append("耗时: ")
-                                    .append(System.currentTimeMillis() - startTime)
-                                    .append("ms");
-                            log.info(sb.toString());
+                            String msg = exchange.getRequest().getURI().getRawPath() +
+                                    "耗时: " +
+                                    (System.currentTimeMillis() - startTime) +
+                                    "ms";
+                            log.info(msg);
                         }
                     })
             );

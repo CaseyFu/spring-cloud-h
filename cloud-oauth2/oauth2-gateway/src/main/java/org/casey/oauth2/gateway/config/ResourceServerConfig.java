@@ -2,12 +2,12 @@ package org.casey.oauth2.gateway.config;
 
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ArrayUtil;
+import org.casey.common.core.Result;
 import org.casey.common.core.consts.AuthConst;
 import org.casey.common.core.consts.RedisConst;
-import org.casey.oauth2.gateway.common.HttpCodeEnum;
-import org.casey.oauth2.gateway.common.Result;
+import org.casey.common.core.enums.HttpCodeEnum;
+import org.casey.common.json.JsonUtil;
 import org.casey.oauth2.gateway.filter.AllowedUriListRemoveJwtFilter;
-import org.casey.oauth2.gateway.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -143,14 +143,14 @@ public class ResourceServerConfig {
             ServerHttpResponse response = exchange.getResponse();
             response.setStatusCode(HttpStatus.OK);
             response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-            String body = JsonUtil.serialize(Result.failed(HttpCodeEnum.UNAUTHORIZED, null, exception.getMessage()));
+            String body = JsonUtil.serialize(Result.failure(HttpCodeEnum.UNAUTHORIZED, null, "ServerAccessDeniedHandler"));
             DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
             return response.writeWith(Mono.just(buffer));
         };
     }
 
     /**
-     * 自定义返回结果, 没有登录或token过期时
+     * 自定义返回结果, 没有登录或token过期时, 或模块抛异常
      */
     @Bean
     public ServerAuthenticationEntryPoint serverAuthenticationEntryPoint() {
@@ -158,7 +158,7 @@ public class ResourceServerConfig {
             ServerHttpResponse response = exchange.getResponse();
             response.setStatusCode(HttpStatus.OK);
             response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-            String body = JsonUtil.serialize(Result.failed(HttpCodeEnum.UNAUTHORIZED, null, exception.getMessage()));
+            String body = JsonUtil.serialize(Result.failure(HttpCodeEnum.UNAUTHORIZED, null, "ServerAuthenticationEntryPoint"));
             DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(StandardCharsets.UTF_8));
             return response.writeWith(Mono.just(buffer));
         };

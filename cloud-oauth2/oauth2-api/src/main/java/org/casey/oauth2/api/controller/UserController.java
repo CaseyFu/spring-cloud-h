@@ -36,4 +36,15 @@ public class UserController {
         return Result.success(objectMapper.readValue(userString, UserDTO.class), "获取成功!");
     }
 
+    @GetMapping("/exception")
+    public void user() {
+        throw new RuntimeException("运行时异常!");
+    }
+
+    @GetMapping("/result")
+    public Result singleton() {
+        return Result.success(null, "枚举单例Result");
+    }
+
+
 }

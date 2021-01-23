@@ -1,4 +1,4 @@
-package org.casey.oauth2.gateway.util;
+package org.casey.common.json;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,33 +50,35 @@ public final class JsonUtil {
      */
     public static final String TIME = "HH:mm:ss";
 
-    /**
-     * 实例
-     */
-    private static volatile ObjectMapper mapper;
+    enum ObjectMapperSingletonEnum {
+        /**
+         * 单实例
+         */
+        INSTANCE;
+        private final ObjectMapper objectMapper;
+
+        ObjectMapperSingletonEnum() {
+            objectMapper = new ObjectMapper();
+            JavaTimeModule javaTimeModule = new JavaTimeModule();
+            javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME)));
+            javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE)));
+            javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(TIME)));
+            javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME)));
+            javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE)));
+            javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(TIME)));
+            objectMapper.registerModule(new ParameterNamesModule()).registerModule(new Jdk8Module()).registerModule(javaTimeModule);
+        }
+
+        public ObjectMapper instance() {
+            return objectMapper;
+        }
+    }
 
     private JsonUtil() {
     }
 
     public static ObjectMapper instance() {
-        if (null == mapper) {
-            synchronized (JsonUtil.class) {
-                if (null == mapper) {
-                    mapper = new ObjectMapper();
-                    JavaTimeModule javaTimeModule = new JavaTimeModule();
-                    javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATE_TIME)));
-                    javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DATE)));
-                    javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(TIME)));
-                    javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME)));
-                    javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE)));
-                    javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(TIME)));
-                    mapper.registerModule(new ParameterNamesModule())
-                            .registerModule(new Jdk8Module())
-                            .registerModule(javaTimeModule);
-                }
-            }
-        }
-        return mapper;
+        return ObjectMapperSingletonEnum.INSTANCE.instance();
     }
 
     public static ObjectWriter writer() {
@@ -144,7 +146,7 @@ public final class JsonUtil {
     /**
      * jsonString -> jsonNode
      */
-    public static JsonNode toJsonNode(String jsonString){
+    public static JsonNode toJsonNode(String jsonString) {
         JsonNode jsonNode;
         try {
             jsonNode = instance().readTree(jsonString);
@@ -157,14 +159,14 @@ public final class JsonUtil {
     /**
      * ObjectNode
      */
-    public static ObjectNode objectNode(){
+    public static ObjectNode objectNode() {
         return instance().createObjectNode();
     }
 
     /**
      * ArrayNode
      */
-    public static ArrayNode arrayNode(){
+    public static ArrayNode arrayNode() {
         return instance().createArrayNode();
     }
 

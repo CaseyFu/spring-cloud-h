@@ -1,12 +1,8 @@
 package org.casey.oauth2.auth.config;
 
-import org.casey.common.core.Result;
-import org.casey.common.core.enums.HttpCodeEnum;
 import org.casey.oauth2.auth.domain.SecurityUser;
 import org.casey.oauth2.auth.filter.ClientAuthenticationFilter;
 import org.casey.oauth2.auth.service.impl.UserServiceImpl;
-import org.casey.oauth2.auth.util.HttpUtil;
-import org.casey.oauth2.auth.util.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,47 +41,55 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final PasswordEncoder passwordEncoder;
     private final UserServiceImpl userDetailsService;
     private final AuthenticationManager authenticationManager;
-
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Autowired
-    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserServiceImpl userDetailsService, AuthenticationManager authenticationManager) {
+    public AuthorizationServerConfig(PasswordEncoder passwordEncoder, UserServiceImpl userDetailsService, AuthenticationManager authenticationManager, AuthenticationEntryPoint authenticationEntryPoint) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.authenticationManager = authenticationManager;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
+    /**
+     * 配置AuthorizationServer安全认证的相关信息, 创建ClientCredentialsTokenEndpointFilter核心过滤器
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
-        // 配置AuthorizationServer安全认证的相关信息，创建ClientCredentialsTokenEndpointFilter核心过滤器
-
-        // security.allowFormAuthenticationForClients();
         ClientAuthenticationFilter endpointFilter = new ClientAuthenticationFilter(security);
         endpointFilter.afterPropertiesSet();
-        endpointFilter.setAuthenticationEntryPoint(authenticationEntryPoint());
-        security.addTokenEndpointAuthenticationFilter(endpointFilter);
+        endpointFilter.setAuthenticationEntryPoint(authenticationEntryPoint);
 
-        security.authenticationEntryPoint(authenticationEntryPoint())
+        security.addTokenEndpointAuthenticationFilter(endpointFilter);
+        security.authenticationEntryPoint(authenticationEntryPoint)
                 .allowFormAuthenticationForClients()
                 .tokenKeyAccess("isAuthenticated()")
                 .checkTokenAccess("permitAll()");
     }
 
+
+    private static final String CLIENT_ID = "cloud-oauth2-app";
+    private static final String SECRET = "2168230078";
+    private static final String SCOPES = "all";
+    private static final int ACCESS_TOKEN_VALIDITY_SECONDS = 180;
+    private static final int REFRESH_TOKEN_VALIDITY_SECONDS = 360;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // 配置OAuth2的客户端相关信息
-        clients
-                .inMemory()
-                .withClient("cloud-oauth2-app")
-                .secret(passwordEncoder.encode("2168230078"))
-                .scopes("all")
-                .accessTokenValiditySeconds(30)
-                .refreshTokenValiditySeconds(180)
+        clients.inMemory()
+                .withClient(CLIENT_ID)
+                .secret(passwordEncoder.encode(SECRET))
+                .scopes(SCOPES)
+                .accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
+                .refreshTokenValiditySeconds(REFRESH_TOKEN_VALIDITY_SECONDS)
                 .authorizedGrantTypes("password", "refresh_token");
     }
 
+    /**
+     * 配置身份认证器, 配置认证方式, TokenStore, TokenGranter, OAuth2RequestFactory
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        // 配置AuthorizationServerEndpointsConfigurer众多相关类，包括配置身份认证器，配置认证方式，TokenStore，TokenGranter，OAuth2RequestFactory
         TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
         List<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(tokenEnhancer());
@@ -93,8 +97,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         // 配置JWT的内容增强器
         enhancerChain.setTokenEnhancers(delegates);
 
-        endpoints
-                .authenticationManager(authenticationManager)
+        endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .accessTokenConverter(accessTokenConverter())
                 .tokenEnhancer(enhancerChain)
@@ -119,24 +122,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         };
     }
 
-    @Bean
-    public KeyPair keyPair() {
-        //从classpath下的证书中获取秘钥对
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "2168230078".toCharArray());
-        return keyStoreKeyFactory.getKeyPair("jwt", "2168230078".toCharArray());
-    }
-
     /**
-     * 自定义返回信息
+     * 从classpath下的证书中获取秘钥对 注册为Bean
      */
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint() {
-        return (request, response, e) -> {
-            // 封装response
-            HttpUtil.packResponse(response);
-            response.getWriter().print(JsonUtil.serialize(Result.failed(HttpCodeEnum.UNAUTHORIZED, null, "无权限访问!")));
-            response.getWriter().flush();
-        };
+    public KeyPair keyPair() {
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "2168230078".toCharArray());
+        return keyStoreKeyFactory.getKeyPair("jwt", "2168230078".toCharArray());
     }
 
 }

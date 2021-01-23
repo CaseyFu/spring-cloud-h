@@ -1,8 +1,8 @@
 package org.casey.product.service.controller;
 
+import org.casey.common.core.Result;
 import org.casey.product.service.entity.Product;
 import org.casey.product.service.service.ProductService;
-import org.casey.common.core.Result;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import io.swagger.annotations.ApiOperation;

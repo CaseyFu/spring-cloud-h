@@ -92,6 +92,16 @@
 			<artifactId>nimbus-jose-jwt</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-json</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-core</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

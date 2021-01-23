@@ -27,7 +27,22 @@
             <artifactId>common-core</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.casey</groupId>
+            <artifactId>common-json</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-web</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>

@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: cloud-oauth2-auth
+    name: oauth2-auth
   datasource:
     url: jdbc:p6spy:mysql://192.168.153.128:3306/cloud?useUnicode=true&characterEncoding=UTF-8&useSSL=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8&allowMultiQueries=true
     username: root
@@ -32,8 +32,8 @@ spring:
         server-addr: 192.168.153.128:8848
 
 mybatis-plus:
-  mapper-locations: classpath*:org/casey/cloudoauth2auth/mapper/xml/*.xml
-  type-aliases-package: org.casey.cloudoauth2auth.entity
+  mapper-locations: classpath*:org/casey/oauth2.auth/mapper/xml/*.xml
+  type-aliases-package: org.casey.oauth2.auth.entity
   global-config:
     db-config:
       #      id-type: auto

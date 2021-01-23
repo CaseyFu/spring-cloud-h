@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: cloud-oauth2-gateway
+    name: oauth2-gateway
   security:
     oauth2:
       resourceserver:
@@ -15,6 +15,8 @@ spring:
     gateway-allowed-uri-list:
       - "/actuator/**"
       - "/auth/oauth/token"
+      - "/auth/**"
+      - "/api/**"
   redis:
     host: 120.25.156.132
     port: 30332
@@ -32,15 +34,15 @@ spring:
           # 使用小写服务名，默认是大写
           lower-case-service-id: true
       routes:
-        - id: cloud-oauth2-api
+        - id: oauth2-api
           # load balance 动态路由方式需要配合eureka, nacos注册中心使用
-          uri: lb://cloud-oauth2-api
+          uri: lb://oauth2-api
           predicates:
             - Path=/api/**
           filters:
             - StripPrefix=1
-        - id: cloud-oauth2-auth
-          uri: lb://cloud-oauth2-auth
+        - id: oauth2-auth
+          uri: lb://oauth2-auth
           predicates:
             - Path=/auth/**
           filters:
