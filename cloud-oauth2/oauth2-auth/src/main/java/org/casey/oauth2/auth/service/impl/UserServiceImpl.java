@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         List<UserDTO> findUserList = userList.stream().filter(item -> item.getUsername().equals(username)).collect(Collectors.toList());
         if (CollUtil.isEmpty(findUserList)) {
-            throw new UsernameNotFoundException(MessageConst.USERNAME_PASSWORD_ERROR);
+            throw new UsernameNotFoundException("用户名或密码错误!");
         }
         SecurityUser securityUser = new SecurityUser(findUserList.get(0));
         if (!securityUser.isEnabled()) {

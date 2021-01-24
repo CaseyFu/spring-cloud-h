@@ -8,14 +8,24 @@ import org.casey.common.web.util.HttpUtil;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
+import org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import sun.security.util.SecurityConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ClassName WebSecurityConfig
@@ -38,8 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // 认证失败和权限不足
         http.exceptionHandling()
-                .authenticationEntryPoint(authenticationEntryPoint())
-                .accessDeniedHandler(accessDeniedHandler());
+                .accessDeniedHandler(accessDeniedHandler())
+                .authenticationEntryPoint(authenticationEntryPoint());
     }
 
     /**
@@ -49,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, e) -> {
             HttpUtil.packResponse(response);
-            response.getWriter().write(JsonUtil.serialize(Result.failure(HttpCodeEnum.UNAUTHORIZED, null, "无相关权限, 服务端拒绝访问!")));
+            response.getWriter().write(JsonUtil.serialize(Result.failure(HttpCodeEnum.UNAUTHORIZED, null, "无相关权限, 服务端拒绝访问accessDeniedHandler!")));
             response.getWriter().flush();
         };
     }
@@ -61,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, e) -> {
             HttpUtil.packResponse(response);
-            response.getWriter().print(JsonUtil.serialize(Result.failure(HttpCodeEnum.UNAUTHORIZED, null, "无权限访问!")));
+            response.getWriter().print(JsonUtil.serialize(Result.failure(HttpCodeEnum.UNAUTHORIZED, null, "无权限访问authenticationEntryPoint!")));
             response.getWriter().flush();
         };
     }

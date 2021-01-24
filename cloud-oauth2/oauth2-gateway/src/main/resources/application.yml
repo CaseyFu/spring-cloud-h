@@ -15,8 +15,8 @@ spring:
     gateway-allowed-uri-list:
       - "/actuator/**"
       - "/auth/oauth/token"
-      - "/auth/**"
-      - "/api/**"
+#      - "/auth/**"
+#      - "/api/**"
   redis:
     host: 120.25.156.132
     port: 30332

@@ -3,6 +3,7 @@ package org.casey.oauth2.auth.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.casey.common.core.Result;
 import org.casey.common.core.enums.HttpCodeEnum;
+import org.springframework.boot.autoconfigure.web.reactive.error.ErrorWebFluxAutoConfiguration;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -23,6 +24,7 @@ public class Oauth2AuthExceptionHandler {
      */
     @ExceptionHandler(InvalidGrantException.class)
     public Result invalidGrantException(InvalidGrantException e) {
+        // OAuth2国际化, 异常message自动根据国家地区进行展示
         return Result.failure(HttpCodeEnum.FORBIDDEN, null, e.getMessage());
     }
 
