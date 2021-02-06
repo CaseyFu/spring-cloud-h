@@ -15,6 +15,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- ==================== spring boot 相关依赖 ==================== -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -26,6 +27,7 @@
 			</exclusions>
 		</dependency>
 
+		<!-- log4j2 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
@@ -43,9 +45,98 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+		<!-- actuator -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
+
+		<!-- ==================== cloud 相关依赖 ==================== -->
+		<dependency>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+		</dependency>
+
+		<!-- spring oauth2.0 (包含了spring security无需单独引入) 相关 -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-oauth2</artifactId>
+		</dependency>
+		<!--<dependency>-->
+		<!--    <groupId>org.springframework.boot</groupId>-->
+		<!--    <artifactId>spring-boot-starter-security</artifactId>-->
+		<!--</dependency>-->
+
+
+		<!-- ==================== jwt ==================== -->
+		<!--<dependency>-->
+		<!--    <groupId>io.jsonwebtoken</groupId>-->
+		<!--    <artifactId>jjwt-root</artifactId>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+		<!--    <groupId>com.nimbusds</groupId>-->
+		<!--    <artifactId>nimbus-jose-jwt</artifactId>-->
+		<!--</dependency>-->
+
+
+		<!-- ==================== 工具 ==================== -->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>knife4j-micro-spring-boot-starter</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-json</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-mybatis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-redis</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<!--true means not generate file to classpath-->
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.ftl</include>
+					<include>**/*.yml</include>
+					<include>**/*.jks</include>
+				</includes>
+				<!--false means generate file-->
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

@@ -1,0 +1,95 @@
+server:
+  port: 10100
+  servlet:
+    context-path: /
+spring:
+  application:
+    name: account-service
+  datasource:
+    url: jdbc:mysql://120.25.156.132:18929/cloud?useUnicode=true&characterEncoding=UTF-8&useSSL=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8&allowMultiQueries=true
+    username: root
+    password: 2168230078
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    initialization-mode: never
+    continue-on-error: true
+    hikari:
+      pool-name: mybatis
+      connection-test-query: SELECT 1
+      auto-commit: true
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 60000
+      connection-timeout: 30000
+  redis:
+    port: 30332
+    host: 120.25.156.132
+    password: 2168230078
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: 5000
+        min-idle: 5
+        time-between-eviction-runs: 1
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.153.128:8848
+        username: nacos
+        password: nacos
+    #      config:
+    #        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+    #        file-extension: yml
+    sentinel:
+      datasource:
+        flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+            data-id: ${spring.application.name}-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
+        degrade:
+          nacos:
+            server-addr: ${spring.cloud.nacos.discovery.server-addr}
+            data-id: ${spring.application.name}-degrade
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
+      transport:
+        dashboard: 192.168.153.128:8080
+        port: 8719
+      eager: true
+#    alibaba:
+#      seata:
+#        tx-service-group: default
+
+
+mybatis-plus:
+  mapper-locations: classpath*:org/casey/account/service/mapper/xml/*.xml
+  type-aliases-package: org.casey.account.service.entity
+  global-config:
+    db-config:
+      #      id-type: auto
+      table-underline: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#feign:
+#  client:
+#    config:
+#      default:
+#        connectTimeout: 5000
+#        readTimeout: 5000
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+

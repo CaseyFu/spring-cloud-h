@@ -77,6 +77,38 @@
                 <scope>import</scope>
             </dependency>
 
+            <!--自己的模块-->
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-core</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-web</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-json</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-knife4j</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-mybatis</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.casey</groupId>
+                <artifactId>common-redis</artifactId>
+                <version>1.0.0</version>
+            </dependency>
+
             <!-- ==================== Swagger ==================== -->
             <!--<dependency>-->
             <!--    <groupId>io.springfox</groupId>-->
@@ -218,6 +250,13 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
+            </dependency>
+
+            <!--redis需要的连接池-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>2.6.2</version>
             </dependency>
 
         </dependencies>

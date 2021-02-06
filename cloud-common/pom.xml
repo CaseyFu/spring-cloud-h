@@ -18,7 +18,13 @@
         <module>common-core</module>
         <module>common-web</module>
         <module>common-json</module>
+        <module>common-mybatis</module>
+        <module>common-redis</module>
     </modules>
+
+    <dependencies>
+
+    </dependencies>
 
     <dependencyManagement>
         <dependencies>

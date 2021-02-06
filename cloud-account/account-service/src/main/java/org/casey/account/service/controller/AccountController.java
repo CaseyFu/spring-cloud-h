@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 */
 
 @RestController
-@RequestMapping("/account")
 @Api(tags = {"Account接口"})
 public class AccountController {
     private final AccountService accountService;

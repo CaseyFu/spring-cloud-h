@@ -1,5 +1,7 @@
 server:
   port: 10010
+  servlet:
+    context-path: /auth
 
 spring:
   application:
@@ -22,17 +24,22 @@ spring:
       max-lifetime: 60000
       connection-timeout: 30000
   redis:
-    host: 120.25.156.132
-    port: 30332
-    password: 2168230078
-    database: 0
+    host: 192.168.153.128
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: 5000
+        min-idle: 5
+        time-between-eviction-runs: 1
   cloud:
     nacos:
       discovery:
         server-addr: 192.168.153.128:8848
 
 mybatis-plus:
-  mapper-locations: classpath*:org/casey/oauth2.auth/mapper/xml/*.xml
+  mapper-locations: classpath*:org/casey/oauth2/auth/mapper/xml/*.xml
   type-aliases-package: org.casey.oauth2.auth.entity
   global-config:
     db-config:
@@ -49,6 +56,4 @@ mybatis-plus:
 #      exposure:
 #        include: "*"
 
-loggin:
-  level:
-    org.springframework: debug
+

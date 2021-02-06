@@ -21,11 +21,7 @@
 	</modules>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.casey</groupId>
-			<artifactId>common-core</artifactId>
-			<version>1.0.0</version>
-		</dependency>
+
 	</dependencies>
 
 </project>

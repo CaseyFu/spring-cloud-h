@@ -82,11 +82,36 @@
 
 		<dependency>
 			<groupId>org.casey</groupId>
+			<artifactId>common-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
 			<artifactId>common-web</artifactId>
 		</dependency>
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<!--true means not generate file to classpath-->
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.ftl</include>
+					<include>**/*.yml</include>
+				</includes>
+				<!--false means generate file-->
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

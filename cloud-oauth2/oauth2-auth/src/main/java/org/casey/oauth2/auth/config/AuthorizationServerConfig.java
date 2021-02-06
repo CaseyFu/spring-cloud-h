@@ -1,9 +1,5 @@
 package org.casey.oauth2.auth.config;
 
-import org.casey.common.core.Result;
-import org.casey.common.core.enums.HttpCodeEnum;
-import org.casey.common.json.JsonUtil;
-import org.casey.common.web.util.HttpUtil;
 import org.casey.oauth2.auth.domain.SecurityUser;
 import org.casey.oauth2.auth.filter.ClientCredentialsTokenEndpointFilterSuccessor;
 import org.casey.oauth2.auth.service.impl.UserServiceImpl;
@@ -12,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -26,8 +21,6 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import java.security.KeyPair;
 import java.util.ArrayList;
@@ -111,8 +104,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenEnhancer(enhancerChain)
                 .reuseRefreshTokens(false);
     }
-
-
 
     @Bean
     public JwtAccessTokenConverter accessTokenConverter() {

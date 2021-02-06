@@ -15,17 +15,20 @@
 	</properties>
 
 	<dependencies>
+		<!-- ==================== spring boot 相关依赖 ==================== -->
+		<!-- webflux 相关依赖 (spring gateway采用的webflux 无需添加spring-boot-web依赖 会和servlet冲突) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 			<exclusions>
 				<exclusion>
-					<artifactId>spring-boot-starter-logging</artifactId>
 					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-logging</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
 
+		<!-- log4j2 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-log4j2</artifactId>
@@ -45,9 +48,28 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.alibaba.cloud</groupId>
-			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+
+		<!-- 自定义的元数据依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- ==================== cloud 相关依赖 ==================== -->
+		<!-- gateway -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-gateway</artifactId>
+		</dependency>
+
+		<!--<dependency>-->
+		<!--    <groupId>org.springframework.cloud</groupId>-->
+		<!--    <artifactId>spring-cloud-starter-oauth2</artifactId>-->
+		<!--</dependency>-->
 
 		<dependency>
 			<groupId>com.alibaba.cloud</groupId>
@@ -60,21 +82,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.alibaba.csp</groupId>
-			<artifactId>sentinel-datasource-nacos</artifactId>
+			<groupId>com.alibaba.cloud</groupId>
+			<artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-gateway</artifactId>
-		</dependency>
 
-		<dependency>
-			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>knife4j-spring-boot-starter</artifactId>
-		</dependency>
-
-		<!-- 认证依赖 -->
+		<!-- ==================== spring security 相关依赖 ==================== -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
@@ -83,28 +96,95 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-resource-server</artifactId>
 		</dependency>
+		<!--<dependency>-->
+		<!--    <groupId>org.springframework.security</groupId>-->
+		<!--    <artifactId>spring-security-oauth2-client</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-oauth2-jose</artifactId>
 		</dependency>
+
+
+		<!-- ==================== jwt ==================== -->
+		<!--<dependency>-->
+		<!--    <groupId>io.jsonwebtoken</groupId>-->
+		<!--    <artifactId>jjwt-api</artifactId>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+		<!--    <groupId>io.jsonwebtoken</groupId>-->
+		<!--    <artifactId>jjwt-impl</artifactId>-->
+		<!--    <scope>runtime</scope>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+		<!--    <groupId>io.jsonwebtoken</groupId>-->
+		<!--    <artifactId>jjwt-jackson</artifactId>-->
+		<!--    <scope>runtime</scope>-->
+		<!--</dependency>-->
+
+		<!--<dependency>-->
+		<!--    <groupId>io.jsonwebtoken</groupId>-->
+		<!--    <artifactId>jjwt-root</artifactId>-->
+		<!--</dependency>-->
+
 		<dependency>
 			<groupId>com.nimbusds</groupId>
 			<artifactId>nimbus-jose-jwt</artifactId>
 		</dependency>
 
+
+		<!-- ==================== 工具 ==================== -->
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba.csp</groupId>
+			<artifactId>sentinel-datasource-nacos</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>knife4j-spring-boot-starter</artifactId>
+		</dependency>
+
 		<dependency>
 			<groupId>org.casey</groupId>
 			<artifactId>common-json</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.casey</groupId>
 			<artifactId>common-core</artifactId>
-			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.casey</groupId>
+			<artifactId>common-redis</artifactId>
 		</dependency>
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+				<!--true means not generate file to classpath-->
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.xml</include>
+					<include>**/*.properties</include>
+					<include>**/*.ftl</include>
+					<include>**/*.yml</include>
+				</includes>
+				<!--false means generate file-->
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

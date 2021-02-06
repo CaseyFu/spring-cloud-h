@@ -4,6 +4,33 @@ server:
 spring:
   application:
     name: cloud-gateway
+  redis:
+    host: 192.168.153.128
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 50
+        max-idle: 50
+        max-wait: 5000
+        min-idle: 5
+        time-between-eviction-runs: 1
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # 配置RSA的公钥访问地址
+          jwk-set-uri: 'http://localhost:10400/auth/rsa/publicKey'
+    # 自定义网关访问白名单
+    gateway-allowed-uri-list:
+      - "/**"
+      - "/actuator/**"
+      - "/auth/oauth/token"
+      - "/doc.html"
+      - "/webjars/**"
+      - "/v2/api-docs"
+      - "/swagger-resources/**"
+#      - "/auth/**"
+#      - "/api/**"
   cloud:
     nacos:
       discovery:
@@ -34,25 +61,33 @@ spring:
 #          enabled: true
           lower-case-service-id: true
       routes:
-        - id: cloud-account-service
-          uri: lb://cloud-account-service
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - SwaggerFilter=true
+            - AuthenticationFilter=false
+#            - StripPrefix=1
+        - id: account-service
+          uri: lb://account-service
           predicates:
             - Path=/account/**
           filters:
             - SwaggerFilter= true
             - AuthenticationFilter= true
 #            - StripPrefix=1
-        - id: cloud-order-service
-          uri: lb://cloud-order-service
+        - id: order-service
+          uri: lb://order-service
           predicates:
             - Path=/order/**
           filters:
             - SwaggerFilter= true
             - RequestTimeFilter=true
 #            - StripPrefix=1
-        - id: cloud-product-service
+        - id: product-service
           # LoadBalance
-          uri: lb://cloud-product-service
+          uri: lb://product-service
           predicates:
             - Path=/product/**
           filters:
