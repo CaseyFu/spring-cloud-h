@@ -1,6 +1,7 @@
 package org.casey.common.json;
 
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -66,7 +67,15 @@ public final class JsonUtil {
             javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DATE_TIME)));
             javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DATE)));
             javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(TIME)));
-            objectMapper.registerModule(new ParameterNamesModule()).registerModule(new Jdk8Module()).registerModule(javaTimeModule);
+            objectMapper
+                    .registerModule(new ParameterNamesModule())
+                    .registerModule(new Jdk8Module())
+                    .registerModule(javaTimeModule)
+                    // 允许解析不带引号的JSON(非标准JSON)
+                    .configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true)
+                    // 允许单引号
+                    .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+
         }
 
         public ObjectMapper instance() {
@@ -113,6 +122,20 @@ public final class JsonUtil {
             throw new RuntimeException("deserialize JsonProcessingException", e);
         }
         return jsonObject;
+    }
+
+    /**
+     * Deserialize jsonObject -> ObjectList
+     */
+    public static <T> List<T> deserialize2List(Object jsonObject, Class<T> parameterClass) {
+        List<T> objectList;
+        CollectionType listType = instance().getTypeFactory().constructCollectionType(ArrayList.class, parameterClass);
+        try {
+            objectList = instance().readValue(instance().writeValueAsString(jsonObject), listType);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("deserialize2List JsonProcessingException", e);
+        }
+        return objectList;
     }
 
     /**
