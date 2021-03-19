@@ -1,0 +1,14 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /client
+
+spring:
+  application:
+    name: cloud-client
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 172.31.57.27:8848
+        username: nacos
+        password: nacos

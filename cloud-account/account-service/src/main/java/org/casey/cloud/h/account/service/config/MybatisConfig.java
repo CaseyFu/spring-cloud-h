@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @Date 2020/12/27 0:39
  */
 @Configuration
-@MapperScan(basePackages = {"org.casey.account.service.mapper"})
+@MapperScan(basePackages = {"org.casey.cloud.h.account.service.mapper"})
 @EnableTransactionManagement
 public class MybatisConfig {
 }

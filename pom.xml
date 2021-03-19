@@ -37,6 +37,7 @@
         <module>cloud-oauth2</module>
         <module>cloud-auth</module>
         <module>cloud-seata</module>
+        <module>cloud-client</module>
     </modules>
 
     <dependencies>

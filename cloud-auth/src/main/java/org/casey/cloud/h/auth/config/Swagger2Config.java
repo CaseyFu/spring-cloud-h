@@ -29,7 +29,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(groupApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("org.casey.auth.controller"))
+                .apis(RequestHandlerSelectors.basePackage("org.casey.cloud.h.auth.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }
